@@ -3,5 +3,19 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.plm.health.manage.api.db.dao.MedicalDeptSubAndDoctorDao">
-    
+    <insert id="insert" parameterType="com.plm.health.manage.api.db.pojo.MedicalDeptSubAndDoctorEntity">
+        UPSERT INTO HOSPITAL.MEDICAL_DEPT_SUB_AND_DOCTOR("id", "dept_sub_id", "doctor_id")
+    VALUES (
+        NEXT VALUE FOR HOSPITAL.MEDICAL_DEPT_SUB_AND_DOCTOR_SEQUENCE,
+        ${deptSubId},
+        ${doctorId}
+        )
+    </insert>
+
+    <update id="updateDoctorSubDept" parameterType="Map">
+        UPSERT INTO HOSPITAL.MEDICAL_DEPT_SUB_AND_DOCTOR("id", "dept_sub_id")
+        SELECT "id", ${subId} FROM HOSPITAL.MEDICAL_DEPT_SUB_AND_DOCTOR
+        WHERE "doctor_id" = ${doctorId}
+    </update>
+
 </mapper>
